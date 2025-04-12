@@ -1,0 +1,43 @@
+name: CICD
+
+on:
+    push:
+      branches:
+        - main 
+
+jobs:
+  deploy:
+    name: Deploy to Hezner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3  
+      - name: install ssh keys
+        # check this thread to understand why its needed:
+        # <https://stackoverflow.com/a/70447517>
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: Recreate the folder structure
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} " \
+          if [ -d ~/${{ secrets.WORK_DIR }} ]; then 
+            cd ~/${{ secrets.WORK_DIR }}/docker
+            docker compose down
+            cd ~/
+            rm -rf ${{ secrets.WORK_DIR }}/
+            mkdir ~/${{ secrets.WORK_DIR }}
+          else
+            mkdir ~/${{ secrets.WORK_DIR }}
+          fi 
+          exit"
+      - name: Copy the docker-compose config
+        run: |  
+          scp -r ./docker ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ~/${{ secrets.WORK_DIR }}/docker
+            docker compose up -d
+            exit
+          EOF
+      - name: Cleanup
+        run: rm -rf ~/.ssh
