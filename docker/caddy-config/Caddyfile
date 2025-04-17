@@ -2,6 +2,13 @@ inmo.busqandote.com {
         reverse_proxy management:8080
 }
 
-api-immo.busqandote.com {
+immo.busqandote.com {
+    handle /api/* {
         reverse_proxy management:8080
+    }
+
+    handle {
+        root * /static/property-management/public
+        file_server
+    }
 }

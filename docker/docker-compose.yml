@@ -9,6 +9,7 @@ services:
     volumes:
       - ./caddy-config:/etc/caddy/
       - ../../caddy-data:/data
+      - ../../static-content:/static
     networks:
       - sharednetwork
 
