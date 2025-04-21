@@ -14,9 +14,9 @@ immo.busqandote.com {
 }
 
 lkrconstruction.com {
-    reverse_proxy management:5000
+    reverse_proxy lkr:5000
 }
 
 www.lkrconstruction.com {
-    reverse_proxy management:5000
+    reverse_proxy lkr:5000
 }
