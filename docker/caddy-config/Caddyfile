@@ -1,5 +1,5 @@
 inmo.busqandote.com {
-        reverse_proxy management:8080
+    reverse_proxy management:8080
 }
 
 immo.busqandote.com {
@@ -11,4 +11,12 @@ immo.busqandote.com {
         root * /static/property-management/public
         file_server
     }
+}
+
+lkrconstruction.com {
+    reverse_proxy management:5000
+}
+
+www.lkrconstruction.com {
+    reverse_proxy management:5000
 }
