@@ -13,6 +13,10 @@ immo.busqandote.com {
     }
 }
 
+anudys.busqandote.com {
+    reverse_proxy lkr:5001
+}
+
 lkrconstruction.com {
     reverse_proxy lkr:5000
 }
