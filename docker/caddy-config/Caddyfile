@@ -14,7 +14,7 @@ immo.busqandote.com {
 }
 
 anudys.busqandote.com {
-    reverse_proxy anudys:5001
+    reverse_proxy anudys:5000
 }
 
 lkrconstruction.com {
